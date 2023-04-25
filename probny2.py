@@ -23,10 +23,6 @@ def command_map():
         button = tk.Button(new_window, text="Use ID", command=lambda: use_station_id(entry.get()))
         button.pack()
 
-    def use_station_id(station_id):
-        print(f"Selected station ID: {station_id}")
-
-
     # Utworzenie okna i wyznaczenie jego rozmiaru:
     root = tk.Tk()
     root.title("AirQualityApp")
@@ -37,8 +33,8 @@ def command_map():
     tk.Label(root, text="").pack()
 
     # wczytanie obrazu mapy
-    map_image = Image.open("Poland_m.png")
-    # map_image = Image.open("mapa_polski.png")
+    map_image = Image.open("Poland_map.png")
+
     map_width, map_height = map_image.size
     min_longtitude = 14.15
     max_longtitude = 24.2
@@ -64,14 +60,12 @@ def command_map():
     cursor.execute('SELECT id, gegr_lat, gegr_lon FROM stations')
     stations = cursor.fetchall()
 
-    # dodanie punktów stacji pomiarowych na mapie
-    # dodanie callbacka na zdarzenie kliknięcia na punkt z tagiem id
+    # dodanie punktów  i podpisów stacji pomiarowych na mapie:
     for id, latitude, longitude in stations:
         x = int((float(longitude) - min_longtitude) * (map_width / (max_longtitude - min_longtitude)))
         y = int((max_latitude - float(latitude)) * (map_height / (max_latitude - min_latitude)))
-        station_name = f"Stacja pomiarowa {id}"
         canvas.create_oval(x - 3, y - 3, x + 3, y + 3, fill="red", tags=(id,))
-        canvas.create_text(x, y + 10, text=str(id), tags=(id), font=("Arial", 6))
+        canvas.create_text(x, y + 10, text=str(id), tags=(id,), font=("Arial", 6))
         canvas.tag_bind(id, "<Button-1>", on_point_click)
 
     conn.close()

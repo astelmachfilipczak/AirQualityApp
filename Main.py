@@ -10,7 +10,10 @@ from command_full import command_full
 from command_city import command_city
 from command_location import command_location
 from command_map import command_map
+
+
 import tkinter as tk
+
 
 
 # Utworzenie okna i wyznaczenie jego rozmiaru:
