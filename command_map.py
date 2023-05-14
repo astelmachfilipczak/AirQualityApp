@@ -1,10 +1,11 @@
 from get_stations_data import get_stations_data
-from get_sensors_data import get_sensors_data
-from get_measurements_data import get_measurements_data
+# from get_sensors_data import get_sensors_data
+# from get_measurements_data import get_measurements_data
 from tkinter import *
 import tkinter as tk
 import sqlite3
 from PIL import Image, ImageTk
+
 
 
 def command_map():
@@ -49,7 +50,7 @@ def command_map():
     #     for row in result:
     #         listbox.insert(tk.END, row)
 
-    # def show_station_data():
+    # def show_station_data(): -------------------------------------------------------
 
     # Utworzenie okna i wyznaczenie jego rozmiaru:
     root = tk.Tk()
@@ -72,7 +73,7 @@ def command_map():
     canvas = tk.Canvas(root, width=map_width, height=map_height)
     canvas.pack()
     map_image_tk = ImageTk.PhotoImage(map_image)
-    canvas.create_image(0, 0, anchor=tk.NW, image=map_image_tk)
+    canvas.create_image(0, 0, anchor=NW, image=map_image_tk)
 
     # Wywołanie funkcji w celu zapisu w bazie danych:
     get_stations_data()
@@ -96,4 +97,6 @@ def command_map():
 
     conn.close()
     root.mainloop()
-command_map()
+
+if __name__ == '__main__': command_map()
+

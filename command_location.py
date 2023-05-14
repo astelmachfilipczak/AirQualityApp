@@ -161,3 +161,4 @@ def command_location():
 
     root.mainloop()
 
+if __name__ == '__main__': command_location()

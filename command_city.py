@@ -23,10 +23,10 @@ def command_city():
         cursor.execute('SELECT * FROM measurements')
 
         # pobranie wyników zapytania:
-        result3 = cursor.fetchall()
+        result = cursor.fetchall()
 
         # dodanie wyników zapytania do listboxa:
-        for row in result3:
+        for row in result:
             listbox.insert(tk.END, row)
 
     def show_sensors_data():
@@ -132,3 +132,4 @@ def command_city():
 
     root.mainloop()
 
+if __name__ == '__main__': command_city()
