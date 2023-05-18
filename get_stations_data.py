@@ -1,4 +1,14 @@
-"----------------------------------------MODUŁ: get_stations_data----------------------------------------"
+"-----------------------------------------------MODUŁ: get_stations_data-----------------------------------------------"
+"""
+    Moduł zawierający funkcję get_stations, która ze strony http://api.gios.gov.pl/pjp-api/rest/station/findAll
+pobiera listę stacji pomiarowych. Dane są zapisywane w postaci tabeli SQL i przechowywane w bazie danych database.db.
+    W przypadku braku łączności lub niedostępności usługi pobrane zostaną dane "historycne".
+
+Moduł zawiera następujące elementy:
+- requests - moduł do wykonywania zapytań sieciowych,
+- sqlite3 - moduł do łączenia z bazą danych database.db,
+- json - moduł do konwersji danych między formatem JSON a obiektami Pythona.
+"""
 import requests
 import sqlite3
 import json
@@ -28,14 +38,11 @@ def get_stations_data():
             ...
         """
 
-    # Tworzenie połączenia z bazą danych, a następnie utworzenie kursora:
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Usuwanie istniejącej tabeli 'stations'
     conn.execute('''DROP TABLE IF EXISTS stations''')
 
-    # Tworzenie tabeli 'stations':
     conn.execute('''CREATE TABLE IF NOT EXISTS stations (
                     id INTEGER NOT NULL PRIMARY KEY,
                     station_name TEXT,
@@ -47,19 +54,17 @@ def get_stations_data():
                     district_name TEXT,
                     province_name TEXT,
                     address_street TEXT)''')
-    # Pobieranie listy wszystkich stacji pomiarowych i zapisywanie pobranych danych do pliku stations.json:
+
     try:
         stations = requests.get('http://api.gios.gov.pl/pjp-api/rest/station/findAll').json()
         with open('stations.json', 'w') as f:
             json.dump(stations, f)
 
-    # W przypadku błędu wczytywanie danych z plików:
     except requests.exceptions.RequestException:
         print('BŁĄD POBIERANIA. WCZYTUJĘ DANE HISTORYCZNE...')
         with open('stations.json', 'r') as f:
             stations = json.load(f)
 
-    # Wypełnianie tabeli 'stations':
     for station in stations:
         city = station['city']
         commune = city['commune']
@@ -69,13 +74,11 @@ def get_stations_data():
                       city['name'], commune['communeName'], commune['districtName'], commune['provinceName'],
                       station['addressStreet']))
 
-    # Wykonanie zapytania SELECT i wydrukowanie wyniku:
     print(f"LISTA DOSTĘPNYCH STACJI:")
     cursor.execute("SELECT * FROM stations")
     for row in cursor.fetchall():
         print(row)
 
-    # Zatwierdzenie i zamknięcie połączenia z bazą danych:
     conn.commit()
     conn.close()
 
