@@ -55,11 +55,20 @@ class CommandCity(Tk):
         self.frame = Frame(self)
         self.frame.pack(fill=BOTH, expand=NO)
 
-        self.listbox = Listbox(self)
+        self.listbox = Listbox(self, font=("Courier", 10))
         self.listbox.pack(side=TOP, fill=BOTH, expand=YES)
-        scrollbar = Scrollbar(self.listbox, orient=VERTICAL, command=self.listbox.yview)
-        self.listbox.config(yscrollcommand=scrollbar.set)
-        scrollbar.pack(side=RIGHT, fill=Y)
+        scrollbar_vertical = Scrollbar(self.listbox, orient=VERTICAL, command=self.listbox.yview)
+        scrollbar_horizontal = Scrollbar(self.listbox, orient=HORIZONTAL, command=self.listbox.xview)
+        self.listbox.config(yscrollcommand=scrollbar_vertical.set)
+        self.listbox.config(xscrollcommand=scrollbar_horizontal.set)
+        scrollbar_vertical.pack(side=RIGHT, fill=Y)
+        scrollbar_horizontal.pack(side=BOTTOM, fill=X)
+
+        headers = ("ID", "Nazwa stacji", "Szer.geog.", "Dług.geog.", "ID miasta", "Miasto", "Gmina", "Powiat", "Wojewódźtwo")
+        column_widths = (5, 50, 10, 10, 10, 20, 20, 25, 25)
+        header_row = " | ".join(
+            header.center(width) for header, width in zip(headers, column_widths))
+        self.listbox.insert(tk.END, header_row)
 
         self.label_city = Label(self.frame, text="PODAJ NAZWĘ MIEJSCOWOŚCI W CELU WYŚWIETLENIA DOSTĘPNYCH STACJI:")
         self.label_staionId = Label(self.frame, text="PODAJ ID STACJI W CELU WYŚWIETLENIA STANOWISK POMIAROWYCH:")
@@ -97,7 +106,9 @@ class CommandCity(Tk):
         result = cursor.fetchall()
 
         for row in result:
-            self.listbox.insert(tk.END, row)
+            formatted_row = " | ".join(
+                str(item).center(width) for item, width in zip(row, column_widths))
+            self.listbox.insert(tk.END, formatted_row)
 
         self.mainloop()
 
@@ -111,6 +122,12 @@ class CommandCity(Tk):
 
         self.listbox.delete(0, END)
 
+        headers = ("Data pobrania", "Dane pomiarowe")
+        column_widths = (20, 20)
+        header_row = " | ".join(
+            header.center(width) for header, width in zip(headers, column_widths))
+        self.listbox.insert(tk.END, header_row)
+
         id = int(self.entry_id.get())
         get_measurements_data(id)
 
@@ -119,7 +136,9 @@ class CommandCity(Tk):
         result = cursor.fetchall()
 
         for row in result:
-            self.listbox.insert(tk.END, row)
+            formatted_row = " | ".join(
+                str(item).center(width) for item, width in zip(row, column_widths))
+            self.listbox.insert(tk.END, formatted_row)
 
         MeasurementAnalysis().chart()
 
@@ -132,6 +151,12 @@ class CommandCity(Tk):
         """
         self.listbox.delete(0, END)
 
+        headers = ("ID stanowiska", "ID stacji", "Nazwa parametru", "Symbol parametru", "Kod parametru", "ID parametru")
+        column_widths = (15, 15, 25, 25, 25, 20)
+        header_row = " | ".join(
+            header.center(width) for header, width in zip(headers, column_widths))
+        self.listbox.insert(tk.END, header_row)
+
         stationId = int(self.entry_staionId.get())
         get_sensors_data(stationId)
 
@@ -140,7 +165,9 @@ class CommandCity(Tk):
         result = cursor.fetchall()
 
         for row in result:
-            self.listbox.insert(tk.END, row)
+            formatted_row = " | ".join(
+                str(item).center(width) for item, width in zip(row, column_widths))
+            self.listbox.insert(tk.END, formatted_row)
 
     def show_city(self):
         """
@@ -151,6 +178,13 @@ class CommandCity(Tk):
         """
         self.listbox.delete(0, END)
 
+        headers = (
+        "ID", "Nazwa stacji", "Szer.geog.", "Dług.geog.", "ID miasta", "Miasto", "Gmina", "Powiat", "Wojewódźtwo")
+        column_widths = (5, 50, 10, 10, 10, 20, 20, 25, 25)
+        header_row = " | ".join(
+            header.center(width) for header, width in zip(headers, column_widths))
+        self.listbox.insert(tk.END, header_row)
+
         city_name = str(self.entry_city.get())
 
         cursor = self.conn.cursor()
@@ -158,6 +192,8 @@ class CommandCity(Tk):
         result = cursor.fetchall()
 
         for row in result:
-            self.listbox.insert(tk.END, row)
+            formatted_row = " | ".join(
+                str(item).center(width) for item, width in zip(row, column_widths))
+            self.listbox.insert(tk.END, formatted_row)
 
 if __name__ == '__main__': CommandCity()

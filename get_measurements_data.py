@@ -72,3 +72,5 @@ def get_measurements_data(id):
     conn.commit()
     conn.close()
 
+
+if __name__ == '__main__': get_measurements_data(50)

@@ -83,4 +83,4 @@ def get_stations_data():
     conn.close()
 
 
-
+if __name__ == '__main__': get_stations_data()

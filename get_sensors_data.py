@@ -77,3 +77,5 @@ def get_sensors_data(stationId):
     conn.commit()
     conn.close()
 
+
+if __name__ == '__main__': get_sensors_data(11)
