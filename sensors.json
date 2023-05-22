@@ -1,1 +1,1 @@
-[{"id": 28500, "stationId": 17160, "param": {"paramName": "py\u0142 zawieszony PM10", "paramFormula": "PM10", "paramCode": "PM10", "idParam": 3}}, {"id": 28523, "stationId": 17160, "param": {"paramName": "py\u0142 zawieszony PM2.5", "paramFormula": "PM2.5", "paramCode": "PM2.5", "idParam": 69}}]
+[{"id": 493, "stationId": 84, "param": {"paramName": "ozon", "paramFormula": "O3", "paramCode": "O3", "idParam": 5}}]

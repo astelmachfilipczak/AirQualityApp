@@ -11,7 +11,7 @@ kolejno:
 Moduł zawiera następujące elementy:
 - Tkinter - moduł do tworzenia interfejsu użytkownika,
 - sqlite3 - moduł do łączenia z bazą danych database.db,
-- geopy - moduł do geolokalizacji,
+- PIL - moduł do otwierania, edycji, zapisywania i przetwarzania różnych formatów graficznych,
 - get_stations_data - funkcja pobiera listę wszystkich stacji pomiarowych i zapisuje ją w bazie danych SQL,
 - get_sensors_data - funkcja pobiera listę stanowisk pomiarowych wybranej stacji i zapisuje ją w bazie danych SQL,
 - get_measurements_data - funkcja pobiera listę pomiarów wybranego parametru i zapisuje ją w bazie danych SQL,
